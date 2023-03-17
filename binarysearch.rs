@@ -1,22 +1,23 @@
 fn main() {
-    let array = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    let target = 10; // array starts at index 0, so it should print 9
-    let index = binary_search(&array, target);
-    println!("{}", index);
+    let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+    let key = 2;
+    match binary_search(&arr, key) {
+        Some(result) => println!("Key {} is present at index {}", key, result),
+        None => println!("Key {} is not present in array", key),
+    }
 }
 
-fn binary_search(array: &[i32], target: i32) -> i32 {
-    let mut left = 0;
-    let mut right = array.len() - 1;
-    while left <= right {
-        let middle = (left + right) / 2;
-        if array[middle] == target {
-            return middle as i32;
-        } else if array[middle] < target {
-            left = middle + 1;
-        } else {
-            right = middle - 1;
+fn binary_search(arr: &[i32], key: i32) -> Option<usize> {
+    let mut low = 0;
+    let mut high = arr.len() - 1;
+
+    while low <= high {
+        let mid = (low + high) / 2;
+        match arr[mid].cmp(&key) {
+            std::cmp::Ordering::Less => low = mid + 1,
+            std::cmp::Ordering::Greater => high = mid - 1,
+            std::cmp::Ordering::Equal => return Some(mid),
         }
     }
-    -1
+    None
 }
